@@ -1,15 +1,20 @@
 import React, {useEffect, useState} from "react";
-import {DatePicker, List, Select} from "antd";
+import {DatePicker, List, Row, Select, Input, Col, Spin} from "antd";
 import moment from "moment";
 import useSource from "../../hooks/api/useSource";
 import {getAllNews, getHeadlines, getSource} from "../../api/NewsApi";
 import News from "../News/News";
+import './NewsList.css';
+
+
+const Search = Input.Search;
 
 export default function NewsList() {
 
     let sources = useSource();
 
     //region Local state
+    const [loading, setLoading] = useState(false);
     const [searchKey, setSearchKey] = useState(null);
     const [dataSource, setDataSource] = useState([]);
     const [page, setPage] = useState(1);
@@ -20,6 +25,7 @@ export default function NewsList() {
 
     useEffect(() => {
         async function fetchData() {
+            setLoading(true);
             try {
                 let res;
                 if ((!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
@@ -34,11 +40,13 @@ export default function NewsList() {
                 }
             } catch (error) {
                 console.log(error);
+            } finally {
+                setLoading(false);
             }
         }
 
         fetchData();
-    }, [selectedSources, selectedCountries]);
+    }, [searchKey, selectedSources, selectedCountries]);
 
     //region handlers
 
@@ -53,23 +61,54 @@ export default function NewsList() {
     //endregion
 
     return (
-        <div>
-            <Select mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
-                {sources.map(source =>
-                    <Select.Option key={source.id} value={source.id}>
-                        {source.name}
-                    </Select.Option>
-                )}
-            </Select>
+        <Spin spinning={loading}>
+            <Row type="flex" justify="center">
+                <Col span={16}>
+                    <Search>
 
-            <List bordered='true'
-                  itemLayout="vertical"
-                  size="large"
-                  dataSource={dataSource}
-                  renderItem={item =>
-                      <List.Item><News data={item}/></List.Item>
-                  }>
-            </List>
-        </div>
+                    </Search>
+                </Col>
+            </Row>
+            <Row type="flex" justify="center">
+                <Col span={4}>
+                    <Select mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
+                        {sources.map(source =>
+                            <Select.Option key={source.id} value={source.id}>
+                                {source.name}
+                            </Select.Option>
+                        )}
+                    </Select>
+                </Col>
+
+                <Col span={4}>
+                    <Select mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
+                        {sources.map(source =>
+                            <Select.Option key={source.id} value={source.id}>
+                                {source.name}
+                            </Select.Option>
+                        )}
+                    </Select>
+                </Col>
+
+                <Col span={4}>
+                    <DatePicker></DatePicker>
+                </Col>
+
+                <Col span={4}>
+                    <DatePicker></DatePicker>
+                </Col>
+            </Row>
+
+            <Row type="flex" justify="center">
+                <List bordered='true'
+                      itemLayout="vertical"
+                      size="large"
+                      dataSource={dataSource}
+                      renderItem={item =>
+                          <List.Item><News data={item}/></List.Item>
+                      }>
+                </List>
+            </Row>
+        </Spin>
     )
 }
