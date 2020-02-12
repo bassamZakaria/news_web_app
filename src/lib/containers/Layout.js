@@ -1,6 +1,9 @@
 import React from "react";
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import Exception from 'ant-design-pro/lib/Exception';
+import {Anchor, Button, Menu} from "antd";
+import "antd/dist/antd.css";
+import Page from "../components/Page/Page";
 
 
 export default function Layout() {
@@ -11,12 +14,24 @@ export default function Layout() {
 
     return (<React.Fragment>
         <BrowserRouter>
+            <div>
+                <Anchor>
+                    <Menu mode='horizontal'>
+                        <Menu.Item key="home">
+                            Home
+                        </Menu.Item>
+                        <Menu.Item key="topHeadlines">
+                            Headlines
+                        </Menu.Item>
+                    </Menu>
+                </Anchor>
+            </div>
             <Switch>
                 <Redirect exact={true} from='/' to={routers.everything}/>
                 <Route path={`${routers.everything}`}
                        exact={true}
                        render={(props) => {
-                           return <div>home</div>;
+                           return <div><Page></Page></div>;
                        }}/>
                 <Route path={`${routers.topHeadlines}`}
                        exact={true}
