@@ -1,6 +1,7 @@
 import React, {useState} from "react";
-import {Avatar, Modal, Row} from "antd";
+import {Avatar, Col, Modal, Row} from "antd";
 import {Ellipsis} from "ant-design-pro";
+import './News.css'
 
 export default function News({data}) {
 
@@ -15,11 +16,17 @@ export default function News({data}) {
         <div>
             <div onClick={listItemOnClick}>
                 <Row>
-                    <Avatar shape="square" size="large" src={data.urlToImage}/>
-                    {data.title}
-                </Row>
-                <Row>
-                    <Ellipsis>{data.content}</Ellipsis>
+                    <Col span={6}>
+                        <Avatar shape="square" size="large" src={data.urlToImage}/>
+                    </Col>
+                    <Col span={18}>
+                        <Row className={'title'}>
+                            {data.title}
+                        </Row>
+                        <Row>
+                            {data.description}
+                        </Row>
+                    </Col>
                 </Row>
             </div>
             <Modal

@@ -69,9 +69,9 @@ export default function NewsList() {
                     </Search>
                 </Col>
             </Row>
-            <Row type="flex" justify="center">
+            <Row type="flex" justify="center" gutter={24}>
                 <Col span={4}>
-                    <Select mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
+                    <Select className={'fluid'} mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
                         {sources.map(source =>
                             <Select.Option key={source.id} value={source.id}>
                                 {source.name}
@@ -81,7 +81,7 @@ export default function NewsList() {
                 </Col>
 
                 <Col span={4}>
-                    <Select mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
+                    <Select className={'fluid'} mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
                         {sources.map(source =>
                             <Select.Option key={source.id} value={source.id}>
                                 {source.name}
@@ -91,23 +91,24 @@ export default function NewsList() {
                 </Col>
 
                 <Col span={4}>
-                    <DatePicker></DatePicker>
+                    <DatePicker className={'fluid'}></DatePicker>
                 </Col>
 
                 <Col span={4}>
-                    <DatePicker></DatePicker>
+                    <DatePicker className={'fluid'}></DatePicker>
                 </Col>
             </Row>
 
             <Row type="flex" justify="center">
-                <List bordered='true'
-                      itemLayout="vertical"
-                      size="large"
-                      dataSource={dataSource}
-                      renderItem={item =>
-                          <List.Item><News data={item}/></List.Item>
-                      }>
-                </List>
+                <Col span={12}>
+                    <List bordered='true'
+                          itemLayout="vertical"
+                          dataSource={dataSource}
+                          renderItem={item =>
+                              <List.Item><News data={item}/></List.Item>
+                          }>
+                    </List>
+                </Col>
             </Row>
         </Spin>
     )

@@ -4,6 +4,7 @@ import Exception from 'ant-design-pro/lib/Exception';
 import {Anchor, Button, Menu, PageHeader} from "antd";
 import "antd/dist/antd.css";
 import NewsList from "../../components/NewsList/NewsList";
+import './Layout.module.scss';
 import './Layout.css';
 
 export default function Layout() {
