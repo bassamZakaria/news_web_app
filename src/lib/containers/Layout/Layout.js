@@ -18,7 +18,7 @@ export default function Layout() {
             <PageHeader
                 title="News"
                 extra={[
-                    <Menu mode='horizontal'>
+                    <Menu key={'mainMenu'} mode='horizontal'>
                         <Menu.Item key="home">
                             Home
                         </Menu.Item>

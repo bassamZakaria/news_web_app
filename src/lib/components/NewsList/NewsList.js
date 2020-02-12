@@ -5,6 +5,7 @@ import useSource from "../../hooks/api/useSource";
 import {getAllNews, getHeadlines, getSource} from "../../api/NewsApi";
 import News from "../News/News";
 import './NewsList.css';
+import {guid} from "../../utils/Helper";
 
 
 const Search = Input.Search;
@@ -50,13 +51,13 @@ export default function NewsList() {
 
     //region handlers
 
-    //region source
-
     function sourceOnChange(value) {
         setSelectedSources(value);
     }
 
-    //endregion
+    function searchOnSearch() {
+        
+    }
 
     //endregion
 
@@ -64,14 +65,13 @@ export default function NewsList() {
         <Spin spinning={loading}>
             <Row type="flex" justify="center">
                 <Col span={16}>
-                    <Search>
-
-                    </Search>
+                    <Search onChange={e => setSearchKey(e.target.value)} onSearch={searchOnSearch}/>
                 </Col>
             </Row>
             <Row type="flex" justify="center" gutter={24}>
                 <Col span={4}>
-                    <Select className={'fluid'} mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
+                    <Select showArrow={true} maxTagCount={1} className={'fluid'} mode='multiple' onChange={sourceOnChange}
+                            style={{width: 120}}>
                         {sources.map(source =>
                             <Select.Option key={source.id} value={source.id}>
                                 {source.name}
@@ -105,7 +105,7 @@ export default function NewsList() {
                           itemLayout="vertical"
                           dataSource={dataSource}
                           renderItem={item =>
-                              <List.Item><News data={item}/></List.Item>
+                              <List.Item key={guid()}><News data={item}/></List.Item>
                           }>
                     </List>
                 </Col>

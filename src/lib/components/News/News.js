@@ -15,9 +15,9 @@ export default function News({data}) {
     return (
         <div>
             <div onClick={listItemOnClick}>
-                <Row>
+                <Row gutter={12}>
                     <Col span={6}>
-                        <Avatar shape="square" size="large" src={data.urlToImage}/>
+                        <Avatar className={'image'} shape="square" size="large" src={data.urlToImage}/>
                     </Col>
                     <Col span={18}>
                         <Row className={'title'}>
