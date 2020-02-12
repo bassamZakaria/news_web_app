@@ -9,7 +9,7 @@ import NewsList from "../components/NewsList/NewsList";
 export default function Layout() {
 
     const routers = {
-        everything: '/v2/everything', topHeadlines: '/v2/top-headlines'
+        everything: '/everything', topHeadlines: '/top-headlines', details: '/details'
     };
 
     return (<React.Fragment>
