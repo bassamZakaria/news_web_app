@@ -1,6 +1,6 @@
 module.exports = {
-    'extends': 'react-app',
-    'rules': {
-        'react-hooks/exhaustive-deps': 'off'
+    "extends": "react-app",
+    "rules": {
+        "react-hooks/rules-of-hooks": "warn"
     }
 };

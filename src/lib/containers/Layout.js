@@ -3,7 +3,7 @@ import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import Exception from 'ant-design-pro/lib/Exception';
 import {Anchor, Button, Menu} from "antd";
 import "antd/dist/antd.css";
-import Page from "../components/Page/Page";
+import NewsList from "../components/NewsList/NewsList";
 
 
 export default function Layout() {
@@ -31,7 +31,7 @@ export default function Layout() {
                 <Route path={`${routers.everything}`}
                        exact={true}
                        render={(props) => {
-                           return <div><Page></Page></div>;
+                           return <div><NewsList></NewsList></div>;
                        }}/>
                 <Route path={`${routers.topHeadlines}`}
                        exact={true}
