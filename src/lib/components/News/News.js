@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Avatar, Col, Modal, Row} from "antd";
 import {Ellipsis} from "ant-design-pro";
 import './News.css'
+import QuickViewArticle from "../QuickViewArticle/QuickViewArticle";
 
 export default function News({data}) {
 
@@ -40,9 +41,7 @@ export default function News({data}) {
                     setModalVisibility(false)
                 }}
             >
-                <p>{data.title}</p>
-                <p>{data.author}</p>
-                <p>{data.source.name}</p>
+                {<QuickViewArticle data={data}/>}
             </Modal>
         </div>
     )
