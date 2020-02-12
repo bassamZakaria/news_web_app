@@ -8,7 +8,6 @@ export default () => {
         async function fetchData() {
             try {
                 const res = await getSource();
-                console.log(res);
                 if (res && res.data && res.data.sources) {
                     setSource(res.data.sources);
                 }

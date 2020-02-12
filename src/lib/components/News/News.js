@@ -1,15 +1,21 @@
-import React from "react";
-import {Row} from "antd";
+import React, {useState} from "react";
+import {Avatar, Row} from "antd";
+import {Ellipsis} from "ant-design-pro";
 
 export default function News({data}) {
-    console.log({data});
+
+    function listItemOnClick(e) {
+        console.log("click", e);
+    }
+
     return (
-        <div>
+        <div onClick={listItemOnClick}>
             <Row>
+                <Avatar shape="square" size="large" src={data.urlToImage}/>
                 {data.title}
             </Row>
             <Row>
-                {data.description}
+                <Ellipsis>{data.content}</Ellipsis>
             </Row>
         </div>
     )
