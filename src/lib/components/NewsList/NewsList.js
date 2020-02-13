@@ -5,18 +5,24 @@ import {getAllNews, getHeadlines} from "../../api/NewsApi";
 import News from "../News/News";
 import './NewsList.css';
 import {guid} from "../../utils/Helper";
+import {useDispatch} from "react-redux";
+import {changeNavBar} from "../../store/actions/newsActions";
 
 
 const Search = Input.Search;
 
-export default function NewsList() {
+export default function NewsList({displayMode}) {
+
+    console.log('rendered News list', displayMode);
+
+    const dispatch = useDispatch();
 
     let sources = useSource();
     const pageSize = 10;
 
     //region Local state
     const [loading, setLoading] = useState(false);
-    const [searchKey, setSearchKey] = useState('a');
+    const [searchKey, setSearchKey] = useState('');
     const [dataSource, setDataSource] = useState([]);
     const [page, setPage] = useState(1);
     const [selectedSources, setSelectedSources] = useState([]);
@@ -29,9 +35,11 @@ export default function NewsList() {
             setLoading(true);
             try {
                 let res;
-                if ((!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
+                if (displayMode === 'home' && (!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
+                    dispatch(changeNavBar('home'));
                     res = await getAllNews(page, pageSize, searchKey, selectedSources);
                 } else {
+                    dispatch(changeNavBar('headlines'));
                     res = await getHeadlines(page, pageSize, searchKey, selectedSources, selectedCountries);
                 }
 
@@ -66,7 +74,8 @@ export default function NewsList() {
             </Row>
             <Row type="flex" justify="center" gutter={24}>
                 <Col span={4}>
-                    <Select showArrow={true} maxTagCount={1} className={'fluid'} mode='multiple'
+                    <Select disabled={!!(selectedCountries && selectedCountries.length)} showArrow={true}
+                            maxTagCount={1} className={'fluid'} mode='multiple'
                             onChange={sourceOnChange}
                             style={{width: 120}}>
                         {sources.map(source =>
@@ -78,7 +87,8 @@ export default function NewsList() {
                 </Col>
 
                 <Col span={4}>
-                    <Select className={'fluid'} mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
+                    <Select disabled={!!(selectedSources && selectedSources.length)} className={'fluid'}
+                            mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
                         {sources.map(source =>
                             <Select.Option key={source.id} value={source.id}>
                                 {source.name}
@@ -95,7 +105,6 @@ export default function NewsList() {
                     <DatePicker className={'fluid'}></DatePicker>
                 </Col>
             </Row>
-
             <Row type="flex" justify="center">
                 <Col span={12}>
                     <List bordered='true'

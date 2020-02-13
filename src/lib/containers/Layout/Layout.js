@@ -1,56 +1,40 @@
 import React, {useEffect} from "react";
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Link, Redirect, Route, Switch} from 'react-router-dom';
 import Exception from 'ant-design-pro/lib/Exception';
 import {Menu, PageHeader} from "antd";
 import "antd/dist/antd.css";
 import NewsList from "../../components/NewsList/NewsList";
 import './Layout.module.scss';
 import './Layout.css';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Article from "../../components/Article/Article";
 import _ from "lodash";
 import {changeNavBar} from "../../store/actions/newsActions";
 
 export default function Layout(props) {
+    const dispatch = useDispatch();
 
     const selectedTab = useSelector(state => _.get(state, 'newsReducer.selectedNavMenu', 'home'));
 
-
-    // const getCurrentKey = (pathname) => {
-    //     const _pathname = pathname || location.pathname;
-    //     const pathArr = _pathname.split('/');
-    //     const path = pathArr[pathArr.indexOf(props.basename) + 1];
-    //     let key = 'everything';
-    //     if (path) {
-    //         key = ['everything', 'top-headlines', 'details'].includes(path) ? path : key;
-    //     }
-    //     return key;
-    // };
-
-    // useEffect(() => {
-    //     const currentSelectedTab = getCurrentKey();
-    //     debugger;
-    //     if (currentSelectedTab !== selectedTab) {
-    //         dispatch(changeNavBar(currentSelectedTab));
-    //     }
-    // }, [location.pathname]);
-
-
     const routers = {
-        everything: '/everything', topHeadlines: '/top-headlines', details: '/details'
+        everything: '/home', headlines: '/headlines', details: '/details'
     };
+
+    function handleTabClick({key}) {
+        dispatch(changeNavBar(key));
+    }
 
     return (<React.Fragment>
         <BrowserRouter>
             <PageHeader
                 title="News"
                 extra={[
-                    <Menu key={'mainMenu'} mode='horizontal' selectedKeys={[selectedTab]}>
+                    <Menu key={'mainMenu'} mode='horizontal' onClick={handleTabClick} selectedKeys={[selectedTab]}>
                         <Menu.Item key="home">
-                            Home
+                            <Link to={'/home'}>Home</Link>
                         </Menu.Item>
-                        <Menu.Item key="topHeadlines">
-                            Headlines
+                        <Menu.Item key="headlines">
+                            <Link to={'/headlines'}>Headlines</Link>
                         </Menu.Item>
                     </Menu>
                 ]}
@@ -62,18 +46,20 @@ export default function Layout(props) {
                 <Redirect exact={true} from='/' to={routers.everything}/>
                 <Route path={`${routers.everything}`}
                        exact={true}
-                       render={(props) => {
-                           return <div><NewsList></NewsList></div>;
+                       render={() => {
+                           console.log('home here');
+                           return <NewsList displayMode={'home'}/>;
                        }}/>
-                <Route path={`${routers.topHeadlines}`}
+                <Route path={`${routers.headlines}`}
                        exact={true}
-                       render={(props) => {
-                           return <div>headlines</div>;
+                       render={() => {
+                           console.log('headlines here');
+                           return <NewsList displayMode={'headlines'}/>;
                        }}/>
                 <Route path={`${routers.details}`}
                        exact={true}
-                       render={(props) => {
-                           return <Article history={props.history}/>;
+                       render={() => {
+                           return <Article/>;
                        }}/>
                 <Route>
                     <Exception type='404' desc='Sorry, the page you visited does not exist.'/>
