@@ -8,9 +8,13 @@ export const guid = () => {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 };
 
-export const apiQueryBuilder = (page, pageSize, searchKey, sources, countries) => {
+export const getApiKeyQuery = () => {
     const token = '3bd6331ba9574e69916e6e9cf6caf086';
-    let query = `apiKey=${token}`;
+    return `apiKey=${token}`;
+};
+
+export const apiQueryBuilder = (page, pageSize, searchKey, sources, countries) => {
+    let query = getApiKeyQuery();
     if (page) {
         query = query.concat(`&page=${page}`)
     }

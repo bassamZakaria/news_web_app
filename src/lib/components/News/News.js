@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {Avatar, Col, Modal, Row} from "antd";
-import {Ellipsis} from "ant-design-pro";
 import './News.css'
 import QuickViewArticle from "../QuickViewArticle/QuickViewArticle";
 

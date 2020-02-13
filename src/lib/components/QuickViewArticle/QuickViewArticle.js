@@ -1,7 +1,12 @@
 import React from "react";
 import {Avatar, Col, Row} from "antd";
+import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setSelectedArticle} from "../../store/actions/newsActions";
 
 export default function QuickViewArticle({data}) {
+    const dispatch = useDispatch();
+
     return (
         <React.Fragment>
             <Row>
@@ -16,6 +21,9 @@ export default function QuickViewArticle({data}) {
             </Row>
             <Row>
                 {data.description}
+            </Row>
+            <Row>
+                <Link onClick={() => dispatch(setSelectedArticle(data))} to={'/details'}>View Details</Link>
             </Row>
         </React.Fragment>
     )

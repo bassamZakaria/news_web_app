@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {DatePicker, List, Row, Select, Input, Col, Spin} from "antd";
-import moment from "moment";
+import {Col, DatePicker, Input, List, Row, Select, Spin} from "antd";
 import useSource from "../../hooks/api/useSource";
-import {acquireCancelTokenSource, getAllNews, getHeadlines, getSource} from "../../api/NewsApi";
+import {getAllNews, getHeadlines} from "../../api/NewsApi";
 import News from "../News/News";
 import './NewsList.css';
 import {guid} from "../../utils/Helper";
@@ -13,13 +12,13 @@ const Search = Input.Search;
 export default function NewsList() {
 
     let sources = useSource();
+    const pageSize = 10;
 
     //region Local state
     const [loading, setLoading] = useState(false);
     const [searchKey, setSearchKey] = useState('a');
     const [dataSource, setDataSource] = useState([]);
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
     const [selectedSources, setSelectedSources] = useState([]);
     const [selectedCountries, setSelectedCountries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
@@ -37,9 +36,8 @@ export default function NewsList() {
                 }
 
                 if (res && res.data && res.data.articles) {
-                    console.log('all news', res);
                     setDataSource(res.data.articles);
-                    setTotalElements(res.data.totalResults);
+                    setTotalElements(res.data.totalResults > 100 ? 100 : res.data.totalResults);
                 }
             } catch (error) {
                 console.log(error);

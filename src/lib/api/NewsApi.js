@@ -1,5 +1,5 @@
 import {axiosNews} from '../axios/axiosInstances'
-import {apiQueryBuilder} from "../utils/Helper";
+import {apiQueryBuilder, getApiKeyQuery} from "../utils/Helper";
 import {cancel, generateCancelTokenSource} from "../axios/axiosOperations";
 
 let token = null;
@@ -15,7 +15,7 @@ export const acquireCancelTokenSource = () => {
 };
 
 
-export const getSource = () => axiosNews.get(`sources?${apiQueryBuilder()}`);
+export const getSource = () => axiosNews.get(`sources?${getApiKeyQuery()}`);
 
 export const getAllNews = (page, pageSize, searchKey, sources) => {
     cancelPendingRequest(token);
