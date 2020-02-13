@@ -2,9 +2,10 @@ import {axiosNews} from '../axios/axiosInstances'
 import {apiQueryBuilder, getApiKeyQuery} from "../utils/Helper";
 import {cancel, generateCancelTokenSource} from "../axios/axiosOperations";
 
+let token = null;
+
 const cancelPendingRequest = (token) => {
     if (token) {
-        debugger;
         cancel(token);
     }
 };
@@ -16,15 +17,17 @@ export const acquireCancelTokenSource = () => {
 
 export const getSource = () => axiosNews.get(`sources?${getApiKeyQuery()}`);
 
-export const getAllNews = (token, newToken, page, pageSize, searchKey, sources, startDate, endDate) => {
+export const getAllNews = (page, pageSize, searchKey, startDate, endDate) => {
     cancelPendingRequest(token);
-    const query = apiQueryBuilder(page, pageSize, searchKey, sources, startDate, endDate);
-    return axiosNews.get(`everything?${query}`, {cancelToken: newToken.token})
+    token = acquireCancelTokenSource();
+    const query = apiQueryBuilder(page, pageSize, searchKey, null, null, startDate, endDate);
+    return axiosNews.get(`everything?${query}`, {cancelToken: token.token})
 };
 
-export const getHeadlines = (token, newToken, page, pageSize, searchKey, sources, countries, startDate, endDate) => {
+export const getHeadlines = (page, pageSize, searchKey, sources, countries, startDate, endDate) => {
     cancelPendingRequest(token);
+    token = acquireCancelTokenSource();
     const query = apiQueryBuilder(page, pageSize, searchKey, sources, countries, startDate, endDate);
-    return axiosNews.get(`top-headlines?${query}`, {cancelToken: newToken.token})
+    return axiosNews.get(`top-headlines?${query}`, {cancelToken: token.token})
 };
 

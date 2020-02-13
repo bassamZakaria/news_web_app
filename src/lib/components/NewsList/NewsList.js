@@ -1,75 +1,85 @@
 import React, {useEffect, useState} from "react";
-import {Col, DatePicker, Input, List, notification, Row, Select, Spin} from "antd";
+import {Col, DatePicker, Input, List, Row, Select, Spin} from "antd";
 import useSource from "../../hooks/api/useSource";
-import {acquireCancelTokenSource, getAllNews, getHeadlines} from "../../api/NewsApi";
+import {getAllNews, getHeadlines} from "../../api/NewsApi";
 import News from "../News/News";
 import './NewsList.css';
 import {guid} from "../../utils/Helper";
 import {useDispatch, useSelector} from "react-redux";
-import {changeNavBar} from "../../store/actions/newsActions";
-import _ from "lodash";
+import {
+    changeNavBar,
+    setEndDate,
+    setPage, setSearchKey,
+    setSelectedCountries,
+    setSelectedSources, setStartDate
+} from "../../store/actions/newsActions";
 import moment from "moment";
 import {COUNTRIES} from '../../utils/Enums'
+import _ from 'lodash';
 
 const Search = Input.Search;
 
-export default function NewsList({displayMode}) {
+export default function NewsList({selectedTab, location, history}) {
 
-    let token = null;
-
-    const selectedTab = useSelector(state => _.get(state, 'newsReducer.selectedNavMenu'));
-
+    console.log(location);
     const dispatch = useDispatch();
 
     let sources = useSource();
     const pageSize = 10;
 
+    //region global state
+    const searchKey = useSelector(state => _.get(state, 'newsReducer.searchKey'));
+    const page = useSelector(state => _.get(state, 'newsReducer.page'));
+    const selectedSources = useSelector(state => _.get(state, 'newsReducer.selectedSources'));
+    const selectedCountries = useSelector(state => _.get(state, 'newsReducer.selectedCountries'));
+    const startDate = useSelector(state => _.get(state, 'newsReducer.startDate'));
+    const endDate = useSelector(state => _.get(state, 'newsReducer.endDate'));
+    //endregion
+
     //no need to use redux as there will be no back
     //TODO: update need to use redux as there will be back from details page(new story)
     //region Local state
     const [loading, setLoading] = useState(false);
-    const [searchKey, setSearchKey] = useState('');
     const [dataSource, setDataSource] = useState([]);
-    const [page, setPage] = useState(1);
-    const [selectedSources, setSelectedSources] = useState([]);
-    const [selectedCountries, setSelectedCountries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const [endDateOpen, setEndDateOpen] = useState(null);
 
     //endregion
 
-    async function fetchData() {
-        setLoading(true);
-        const newToken = acquireCancelTokenSource();
-        try {
-            let res;
-            if (displayMode === 'home' && (!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
-                dispatch(changeNavBar('home'));
-                res = await getAllNews(token, newToken, page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
-            } else {
-                dispatch(changeNavBar('headlines'));
-                res = await getHeadlines(token, newToken, page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
-            }
-
-            if (res && res.data && res.data.articles) {
-                setDataSource(res.data.articles);
-                setTotalElements(res.data.totalResults > 100 ? 100 : res.data.totalResults);
-            }
-        } catch (error) {
-            notification['error']({
-                message: error.message
-            });
-            console.log(error);
-            //TODO: need to add interceptors to handle errors
-        } finally {
-            setLoading(false);
-            token = newToken;
-        }
-    }
-
     useEffect(() => {
+        async function fetchData() {
+            setLoading(true);
+            try {
+                let res;
+                if ((selectedTab === 'home') || ((!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length))) {
+                    if (selectedTab !== 'home') {
+                        dispatch(changeNavBar('home'));
+                    }
+                    if (location.pathname !== '/home') {
+                        history.push('/home');
+                    }
+                    res = await getAllNews(page, pageSize, searchKey, startDate, endDate);
+                } else {
+                    if (selectedTab !== 'headlines') {
+                        dispatch(changeNavBar('headlines'));
+                    }
+                    if (location.pathname !== '/headlines') {
+                        history.push('/headlines');
+                    }
+                    res = await getHeadlines(page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
+                }
+
+                if (res && res.data && res.data.articles) {
+                    setDataSource(res.data.articles);
+                    setTotalElements(res.data.totalResults > 100 ? 100 : res.data.totalResults);
+                }
+            } catch (error) {
+                console.log(error);
+                //TODO: need to add interceptors to handle errors
+            } finally {
+                setLoading(false);
+            }
+        }
+
         fetchData();
     }, [selectedTab, searchKey, selectedSources, selectedCountries, page, startDate, endDate]);
 
@@ -91,16 +101,6 @@ export default function NewsList({displayMode}) {
         return endValue.valueOf() <= startDate.valueOf() || endValue.valueOf() > moment().valueOf();
     }
 
-    function handleStartOpenChange(open) {
-        if (!open) {
-            setEndDateOpen(true);
-        }
-    }
-
-    function handleEndOpenChange(open) {
-        setEndDateOpen(open);
-    }
-
     //endregion
 
     //endregion
@@ -109,14 +109,14 @@ export default function NewsList({displayMode}) {
         <Spin spinning={loading}>
             <Row type="flex" justify="center">
                 <Col span={16}>
-                    <Search onChange={e => setSearchKey(e.target.value.trimStart())}/>
+                    <Search value={searchKey} onChange={e => dispatch(setSearchKey(e.target.value.trimStart()))}/>
                 </Col>
             </Row>
             <Row type="flex" justify="center" gutter={8}>
                 <Col span={4}>
                     <Select placeholder={'Select Source'} disabled={!!(selectedCountries && selectedCountries.length)}
                             showArrow={true} maxTagCount={1} className={'fluid'} mode='multiple'
-                            onChange={value => setSelectedSources(value)}>
+                            value={selectedSources} onChange={value => dispatch(setSelectedSources(value))}>
                         {sources.map(source =>
                             <Select.Option key={source.id} value={source.id}>
                                 {source.name}
@@ -128,7 +128,7 @@ export default function NewsList({displayMode}) {
                 <Col span={4}>
                     <Select placeholder={'Select Country'} disabled={!!(selectedSources && selectedSources.length)}
                             showArrow={true} maxTagCount={1} className={'fluid'} mode='multiple'
-                            onChange={value => setSelectedCountries(value)}>
+                            value={selectedCountries} onChange={value => dispatch(setSelectedCountries(value))}>
                         {Object.entries(COUNTRIES).map(([key, value]) =>
                             <Select.Option key={key} value={key}>
                                 {value}
@@ -144,8 +144,7 @@ export default function NewsList({displayMode}) {
                         format="YYYY-MM-DD"
                         value={startDate}
                         placeholder="From"
-                        onChange={(value) => setStartDate(value)}
-                        onOpenChange={handleStartOpenChange}
+                        onChange={value => dispatch(setStartDate(value))}
                     />
                 </Col>
 
@@ -156,9 +155,7 @@ export default function NewsList({displayMode}) {
                         format="YYYY-MM-DD"
                         value={endDate}
                         placeholder="To"
-                        onChange={(value) => setEndDate(value)}
-                        open={endDateOpen}
-                        onOpenChange={handleEndOpenChange}
+                        onChange={value => dispatch(setEndDate(value))}
                     />
                 </Col>
 
@@ -169,8 +166,9 @@ export default function NewsList({displayMode}) {
                           dataSource={dataSource}
                           pagination={{
                               onChange: page => {
-                                  setPage(page)
+                                  dispatch(setPage(page))
                               },
+                              current: page,
                               pageSize: pageSize,
                               total: totalElements
                           }}

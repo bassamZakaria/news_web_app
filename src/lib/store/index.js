@@ -9,7 +9,7 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-    return appReducer({}, action);
+    return appReducer(state, action);
 };
 
 export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));

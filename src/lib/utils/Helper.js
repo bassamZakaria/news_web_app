@@ -8,6 +8,10 @@ export const guid = () => {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 };
 
+export const routers = {
+    everything: '/home', headlines: '/headlines', details: '/details'
+};
+
 export const getApiKeyQuery = () => {
     const token = process.env.REACT_APP_API_KEY;
     return `apiKey=${token}`;
