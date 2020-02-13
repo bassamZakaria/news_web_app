@@ -18,13 +18,13 @@ export const getApiKeyQuery = () => {
 export const apiQueryBuilder = (page, pageSize, searchKey, sources, countries, startDate, endDate) => {
     let query = getApiKeyQuery();
     if (searchKey) {
-        query = query.concat(`&q=${searchKey}`)
+        query = query.concat(`&q=${encodeURI(searchKey)}`)
     }
     if (sources && sources.length) {
         query = query.concat(`&sources=${sources}`)
     }
     if (countries && countries.length) {
-        query = query.concat(`&sources=${countries}`)
+        query = query.concat(`&country=${countries}`)
     }
     //to always search by a if there are no param due to limit in APIs instead of listing by sources to have better performance
     if (query === getApiKeyQuery()) {

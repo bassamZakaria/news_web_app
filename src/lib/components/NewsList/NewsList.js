@@ -100,14 +100,13 @@ export default function NewsList({displayMode}) {
         <Spin spinning={loading}>
             <Row type="flex" justify="center">
                 <Col span={16}>
-                    <Search onChange={e => setSearchKey(e.target.value)}/>
+                    <Search onChange={e => setSearchKey(e.target.value.trimStart())}/>
                 </Col>
             </Row>
             <Row type="flex" justify="center" gutter={8}>
                 <Col span={4}>
                     <Select placeholder={'Select Source'} disabled={!!(selectedCountries && selectedCountries.length)}
-                            showArrow={true}
-                            maxTagCount={1} className={'fluid'} mode='multiple'
+                            showArrow={true} maxTagCount={1} className={'fluid'} mode='multiple'
                             onChange={value => setSelectedSources(value)}>
                         {sources.map(source =>
                             <Select.Option key={source.id} value={source.id}>
@@ -119,8 +118,8 @@ export default function NewsList({displayMode}) {
 
                 <Col span={4}>
                     <Select placeholder={'Select Country'} disabled={!!(selectedSources && selectedSources.length)}
-                            className={'fluid'}
-                            mode='multiple' onChange={value => setSelectedCountries(value)}>
+                            showArrow={true} maxTagCount={1} className={'fluid'} mode='multiple'
+                            onChange={value => setSelectedCountries(value)}>
                         {Object.entries(COUNTRIES).map(([key, value]) =>
                             <Select.Option key={key} value={key}>
                                 {value}
@@ -157,8 +156,7 @@ export default function NewsList({displayMode}) {
             </Row>
             <Row type="flex" justify="center">
                 <Col span={12}>
-                    <List bordered='true'
-                          itemLayout="vertical"
+                    <List itemLayout="vertical"
                           dataSource={dataSource}
                           pagination={{
                               onChange: page => {
