@@ -50,21 +50,9 @@ export default function NewsList({selectedTab, location, history}) {
             setLoading(true);
             try {
                 let res;
-                if ((selectedTab === 'home') || ((!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length))) {
-                    if (selectedTab !== 'home') {
-                        dispatch(changeNavBar('home'));
-                    }
-                    if (location.pathname !== '/home') {
-                        history.push('/home');
-                    }
+                if ((selectedTab === 'home')) {
                     res = await getAllNews(page, pageSize, searchKey, startDate, endDate);
                 } else {
-                    if (selectedTab !== 'headlines') {
-                        dispatch(changeNavBar('headlines'));
-                    }
-                    if (location.pathname !== '/headlines') {
-                        history.push('/headlines');
-                    }
                     res = await getHeadlines(page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
                 }
 
