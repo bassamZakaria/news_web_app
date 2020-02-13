@@ -3,7 +3,7 @@ import {ACTIONS} from "../actionTypes";
 
 const initialState = {
     selectedArticle: null,
-    selectedNavMenu: 'home'
+    selectedNavMenu: ''
 };
 
 const setSelectedArticle = (state, action) => {

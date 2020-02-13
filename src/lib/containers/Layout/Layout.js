@@ -15,7 +15,7 @@ import {ARTICLE_DISPLAY_MODE} from "../../utils/Enums";
 export default function Layout(props) {
     const dispatch = useDispatch();
 
-    const selectedTab = useSelector(state => _.get(state, 'newsReducer.selectedNavMenu', 'home'));
+    const selectedTab = useSelector(state => _.get(state, 'newsReducer.selectedNavMenu', ''));
 
     const routers = {
         everything: '/home', headlines: '/headlines', details: '/details'
