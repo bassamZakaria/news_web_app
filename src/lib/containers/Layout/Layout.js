@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Link, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Link, Redirect, Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import Exception from 'ant-design-pro/lib/Exception';
 import {Menu, PageHeader} from "antd";
 import "antd/dist/antd.css";
@@ -11,6 +11,7 @@ import Article from "../../components/Article/Article";
 import _ from "lodash";
 import {changeNavBar} from "../../store/actions/newsActions";
 import {ARTICLE_DISPLAY_MODE} from "../../utils/Enums";
+
 
 export default function Layout(props) {
     const dispatch = useDispatch();
@@ -25,6 +26,10 @@ export default function Layout(props) {
         dispatch(changeNavBar(key));
     }
 
+    //TODO: need to fix this
+    // const location = useLocation();
+    // const history = useHistory();
+
     return (<React.Fragment>
         <BrowserRouter>
             <PageHeader
@@ -32,10 +37,10 @@ export default function Layout(props) {
                 extra={[
                     <Menu key={'mainMenu'} mode='horizontal' onClick={handleTabClick} selectedKeys={[selectedTab]}>
                         <Menu.Item key="home">
-                            <Link style={{color : 'white'}} to={'/home'}>Home</Link>
+                            <Link style={{color: 'white'}} to={'/home'}>Home</Link>
                         </Menu.Item>
                         <Menu.Item key="headlines">
-                            <Link style={{color : 'white'}} to={'/headlines'}>Headlines</Link>
+                            <Link style={{color: 'white'}} to={'/headlines'}>Headlines</Link>
                         </Menu.Item>
                     </Menu>
                 ]}
@@ -48,13 +53,11 @@ export default function Layout(props) {
                 <Route path={`${routers.everything}`}
                        exact={true}
                        render={() => {
-                           console.log('home here');
                            return <NewsList displayMode={'home'}/>;
                        }}/>
                 <Route path={`${routers.headlines}`}
                        exact={true}
                        render={() => {
-                           console.log('headlines here');
                            return <NewsList displayMode={'headlines'}/>;
                        }}/>
                 <Route path={`${routers.details}`}

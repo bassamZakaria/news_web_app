@@ -9,7 +9,7 @@ export const guid = () => {
 };
 
 export const getApiKeyQuery = () => {
-    const token = '3bd6331ba9574e69916e6e9cf6caf086';
+    const token = process.env.REACT_APP_API_KEY;
     return `apiKey=${token}`;
 };
 

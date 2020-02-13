@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Col, DatePicker, Input, List, Row, Select, Spin} from "antd";
+import {Col, DatePicker, Input, List, notification, Row, Select, Spin} from "antd";
 import useSource from "../../hooks/api/useSource";
-import {getAllNews, getHeadlines} from "../../api/NewsApi";
+import {acquireCancelTokenSource, getAllNews, getHeadlines} from "../../api/NewsApi";
 import News from "../News/News";
 import './NewsList.css';
 import {guid} from "../../utils/Helper";
@@ -15,15 +15,17 @@ const Search = Input.Search;
 
 export default function NewsList({displayMode}) {
 
-    const selectedTab = useSelector(state => _.get(state, 'newsReducer.selectedNavMenu'));
+    let token = null;
 
-    console.log('rendered News list', displayMode);
+    const selectedTab = useSelector(state => _.get(state, 'newsReducer.selectedNavMenu'));
 
     const dispatch = useDispatch();
 
     let sources = useSource();
     const pageSize = 10;
 
+    //no need to use redux as there will be no back
+    //TODO: update need to use redux as there will be back from details page(new story)
     //region Local state
     const [loading, setLoading] = useState(false);
     const [searchKey, setSearchKey] = useState('');
@@ -35,32 +37,39 @@ export default function NewsList({displayMode}) {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [endDateOpen, setEndDateOpen] = useState(null);
+
     //endregion
 
-    useEffect(() => {
-        async function fetchData() {
-            setLoading(true);
-            try {
-                let res;
-                if (displayMode === 'home' && (!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
-                    dispatch(changeNavBar('home'));
-                    res = await getAllNews(page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
-                } else {
-                    dispatch(changeNavBar('headlines'));
-                    res = await getHeadlines(page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
-                }
-
-                if (res && res.data && res.data.articles) {
-                    setDataSource(res.data.articles);
-                    setTotalElements(res.data.totalResults > 100 ? 100 : res.data.totalResults);
-                }
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
+    async function fetchData() {
+        setLoading(true);
+        const newToken = acquireCancelTokenSource();
+        try {
+            let res;
+            if (displayMode === 'home' && (!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
+                dispatch(changeNavBar('home'));
+                res = await getAllNews(token, newToken, page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
+            } else {
+                dispatch(changeNavBar('headlines'));
+                res = await getHeadlines(token, newToken, page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
             }
-        }
 
+            if (res && res.data && res.data.articles) {
+                setDataSource(res.data.articles);
+                setTotalElements(res.data.totalResults > 100 ? 100 : res.data.totalResults);
+            }
+        } catch (error) {
+            notification['error']({
+                message: error.message
+            });
+            console.log(error);
+            //TODO: need to add interceptors to handle errors
+        } finally {
+            setLoading(false);
+            token = newToken;
+        }
+    }
+
+    useEffect(() => {
         fetchData();
     }, [selectedTab, searchKey, selectedSources, selectedCountries, page, startDate, endDate]);
 
