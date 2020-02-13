@@ -7,7 +7,8 @@ const initialState = {
 };
 
 const setSelectedArticle = (state, action) => {
-    return dotProp.set(state, 'selectedArticle', action.article);
+    const tmpState = dotProp.set(state, 'selectedNavMenu', null);
+    return dotProp.set(tmpState, 'selectedArticle', action.article);
 };
 
 const changeNavBarSelectedMenu = (state, action) => {
