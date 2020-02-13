@@ -1,3 +1,5 @@
+Please add REACT_APP_API_KEY= to the env file with generated news API key
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
