@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Avatar, Col, Modal, Row} from "antd";
+import {Col, Modal, Row} from "antd";
 import './News.css'
 import Article from "../Article/Article";
 import {ARTICLE_DISPLAY_MODE} from "../../utils/Enums";

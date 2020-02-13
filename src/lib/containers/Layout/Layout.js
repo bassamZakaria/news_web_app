@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {BrowserRouter, Link, Redirect, Route, Switch} from 'react-router-dom';
 import Exception from 'ant-design-pro/lib/Exception';
 import {Menu, PageHeader} from "antd";

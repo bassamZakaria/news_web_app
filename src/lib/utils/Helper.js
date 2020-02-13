@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export const guid = () => {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)

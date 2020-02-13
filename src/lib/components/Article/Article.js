@@ -18,14 +18,14 @@ export default function Article({data, displayMode}) {
         return (
             <div style={{margin: '24px'}}>
                 <Row gutter={6}>
-                    <Col span={6}>
+                    <Col span={8}>
                         {selectedArticle.urlToImage && selectedArticle.urlToImage !== 'null' ?
                             <img className={'fluid'} src={selectedArticle.urlToImage} alt={'newPic'}/> :
                             <img className={'fluid'} alt={'noImage'}
                                  src="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"/>}
                     </Col>
 
-                    <Col span={12}>
+                    <Col span={16}>
                         <div className={articleStyle.title}>{selectedArticle.title}</div>
 
                         {selectedArticle.source && selectedArticle.source.name &&
@@ -42,7 +42,7 @@ export default function Article({data, displayMode}) {
                 </Row>
 
                 {selectedArticle.content &&
-                <Row> <Description description={selectedArticle.description} content={selectedArticle.content}/>
+                <Row className={articleStyle.content}> <Description description={selectedArticle.description} content={selectedArticle.content}/>
                 </Row>}
 
                 {displayMode && displayMode === ARTICLE_DISPLAY_MODE.QUICK_VIEW &&
