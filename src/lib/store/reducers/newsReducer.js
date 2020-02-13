@@ -18,6 +18,9 @@ const setSelectedArticle = (state, action) => {
 };
 
 const changeNavBarSelectedMenu = (state, action) => {
+    if (action.navKeyBar === 'home') {
+        return dotProp.set(initialState, 'selectedNavMenu', action.navKeyBar);
+    }
     return dotProp.set(state, 'selectedNavMenu', action.navKeyBar);
 };
 
