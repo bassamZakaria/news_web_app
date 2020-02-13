@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Col, DatePicker, Input, List, Row, Select, Spin} from "antd";
+import {Col, DatePicker, Input, List, notification, Row, Select, Spin} from "antd";
 import useSource from "../../hooks/api/useSource";
 import {getAllNews, getHeadlines} from "../../api/NewsApi";
 import News from "../News/News";
@@ -20,8 +20,6 @@ import _ from 'lodash';
 const Search = Input.Search;
 
 export default function NewsList({selectedTab, location, history}) {
-
-    console.log(location);
     const dispatch = useDispatch();
 
     let sources = useSource();
@@ -61,8 +59,10 @@ export default function NewsList({selectedTab, location, history}) {
                     setTotalElements(res.data.totalResults > 100 ? 100 : res.data.totalResults);
                 }
             } catch (error) {
-                console.log(error);
-                //TODO: need to add interceptors to handle errors
+                //TODO: need to add interceptors to handle errors and meaningful error messages
+                notification.error({
+                    message: error.message
+                });
             } finally {
                 setLoading(false);
             }

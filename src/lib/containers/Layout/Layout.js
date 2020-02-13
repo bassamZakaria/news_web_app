@@ -29,7 +29,6 @@ export default function Layout() {
 
     //region to  always select the right tab when land
     const getCurrentKey = () => {
-        debugger;
         const _pathname = location.pathname;
         const pathArr = _pathname.split('/');
         const path = pathArr[1];
@@ -72,13 +71,11 @@ export default function Layout() {
                     <Route path={`${routers.everything}`}
                            exact={true}
                            render={(props) => {
-                               console.log('home render');
                                return <NewsList {...props} selectedTab={'home'}/>;
                            }}/>
                     <Route path={`${routers.headlines}`}
                            exact={true}
                            render={(props) => {
-                               console.log('headlines render');
                                return <NewsList {...props} selectedTab={'headlines'}/>;
                            }}/>
                     <Route path={`${routers.details}`}
