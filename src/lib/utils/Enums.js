@@ -4,5 +4,19 @@ export const ARTICLE_DISPLAY_MODE = {
 };
 
 export const COUNTRIES = {
-    ae: 'United Arab Emirates'
+    ae: 'United Arab Emirates',
+    ar: 'Argentina',
+    at: 'Austria',
+    au: 'Australia',
+    be: 'Belgium',
+    bg: 'Bulgaria',
+    br: 'Brazil',
+    ca: 'Canada',
+    cn: 'China',
+    co: 'Colombia',
+    eg: 'Egypt',
+    us: 'USA',
+    fr: 'France',
+    de: 'Germany',
+    gb: 'England'
 };
