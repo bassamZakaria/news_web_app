@@ -10,7 +10,6 @@ export default function News({data}) {
     const [modalVisibility, setModalVisibility] = useState(false);
 
     function listItemOnClick(e) {
-        console.log("click", e);
         setModalVisibility(true);
     }
 

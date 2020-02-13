@@ -77,7 +77,7 @@ export default function NewsList({displayMode}) {
 
     function disabledEndDate(endValue) {
         if (!endValue || !startDate) {
-            return false;
+            return endValue.valueOf() > moment().valueOf();
         }
         return endValue.valueOf() <= startDate.valueOf() || endValue.valueOf() > moment().valueOf();
     }
