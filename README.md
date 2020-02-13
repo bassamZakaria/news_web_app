@@ -1,5 +1,25 @@
 Please add REACT_APP_API_KEY= to the env file with generated news API key
 
+- As a user, When I click on Headlines I want to see top-headlines => done
+ 
+- As a user, When I click on "Home" I want to see all the news without filters => done
+ 
+- As a user, I want to be able to land directly to either "Home" or "Headlines" page => done
+
+- As a user, I want to be able to select either "Source" or "Country" (not at the same time) => done
+ 
+- As a user, I want to be directly switched to "Headlines" when I select "Source" or "Country" => not done (faced a lot of issues regarding due to performance)
+ 
+- As a user, I want to be able to open a quick news view => done
+ 
+- As a user, I want to be able to open a detail page (The user will not be able to land on this page directly) => done
+ 
+- As a user, I want to be able to click back from the "Detail" page to the last selected filters => done
+ 
+- As a user, I want to be able to search by any value for title and body. => done
+
+- If There are no sources or countries will search with 'a' for everything and top-headlines as it's required to have at least (search keyword, source, domain, country or category)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
