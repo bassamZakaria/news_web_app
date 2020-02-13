@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Article from "../../components/Article/Article";
 import _ from "lodash";
 import {changeNavBar} from "../../store/actions/newsActions";
+import {ARTICLE_DISPLAY_MODE} from "../../utils/Enums";
 
 export default function Layout(props) {
     const dispatch = useDispatch();
@@ -59,7 +60,7 @@ export default function Layout(props) {
                 <Route path={`${routers.details}`}
                        exact={true}
                        render={() => {
-                           return <Article/>;
+                           return <Article displayMode={ARTICLE_DISPLAY_MODE.DETAILS}/>;
                        }}/>
                 <Route>
                     <Exception type='404' desc='Sorry, the page you visited does not exist.'/>

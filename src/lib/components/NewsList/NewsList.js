@@ -5,13 +5,16 @@ import {getAllNews, getHeadlines} from "../../api/NewsApi";
 import News from "../News/News";
 import './NewsList.css';
 import {guid} from "../../utils/Helper";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {changeNavBar} from "../../store/actions/newsActions";
+import _ from "lodash";
 
 
 const Search = Input.Search;
 
 export default function NewsList({displayMode}) {
+
+    const selectedTab = useSelector(state => _.get(state, 'newsReducer.selectedNavMenu', 'home'));
 
     console.log('rendered News list', displayMode);
 
@@ -55,7 +58,7 @@ export default function NewsList({displayMode}) {
         }
 
         fetchData();
-    }, [searchKey, selectedSources, selectedCountries, page]);
+    }, [selectedTab, searchKey, selectedSources, selectedCountries, page]);
 
     //region handlers
 

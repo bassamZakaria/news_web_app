@@ -15,12 +15,6 @@ export const getApiKeyQuery = () => {
 
 export const apiQueryBuilder = (page, pageSize, searchKey, sources, countries) => {
     let query = getApiKeyQuery();
-    if (page) {
-        query = query.concat(`&page=${page}`)
-    }
-    if (pageSize) {
-        query = query.concat(`&pageSize=${pageSize}`)
-    }
     if (searchKey) {
         query = query.concat(`&q=${searchKey}`)
     }
@@ -29,6 +23,16 @@ export const apiQueryBuilder = (page, pageSize, searchKey, sources, countries) =
     }
     if (countries && countries.length) {
         query = query.concat(`&sources=${countries}`)
+    }
+    //to always search by a if there are no param due to limit in APIs instead of listing by sources to have better performance
+    if (query === getApiKeyQuery()) {
+        query = query.concat(`&q=a`)
+    }
+    if (page) {
+        query = query.concat(`&page=${page}`)
+    }
+    if (pageSize) {
+        query = query.concat(`&pageSize=${pageSize}`)
     }
     return query;
 };

@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import {Avatar, Col, Modal, Row} from "antd";
 import './News.css'
-import QuickViewArticle from "../QuickViewArticle/QuickViewArticle";
+import Article from "../Article/Article";
+import {ARTICLE_DISPLAY_MODE} from "../../utils/Enums";
 
 export default function News({data}) {
 
@@ -40,7 +41,7 @@ export default function News({data}) {
                     setModalVisibility(false)
                 }}
             >
-                {<QuickViewArticle data={data}/>}
+                {<Article data={data} displayMode={ARTICLE_DISPLAY_MODE.QUICK_VIEW}/>}
             </Modal>
         </div>
     )
