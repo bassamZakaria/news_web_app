@@ -115,7 +115,7 @@ export default function NewsList({selectedTab, location, history}) {
 
                 <Col span={4}>
                     <Select placeholder={'Select Country'} disabled={!!(selectedSources && selectedSources.length)}
-                            showArrow={true} maxTagCount={1} className={'fluid'}
+                            showArrow={true} maxTagCount={1} className={'fluid'} allowClear={true}
                             value={selectedCountries} onChange={value => dispatch(setSelectedCountries(value))}>
                         {Object.entries(COUNTRIES).map(([key, value]) =>
                             <Select.Option key={key} value={key}>
