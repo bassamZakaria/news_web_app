@@ -8,13 +8,14 @@ import {guid} from "../../utils/Helper";
 import {useDispatch, useSelector} from "react-redux";
 import {changeNavBar} from "../../store/actions/newsActions";
 import _ from "lodash";
-
+import moment from "moment";
+import {COUNTRIES} from '../../utils/Enums'
 
 const Search = Input.Search;
 
 export default function NewsList({displayMode}) {
 
-    const selectedTab = useSelector(state => _.get(state, 'newsReducer.selectedNavMenu', 'home'));
+    const selectedTab = useSelector(state => _.get(state, 'newsReducer.selectedNavMenu'));
 
     console.log('rendered News list', displayMode);
 
@@ -31,6 +32,9 @@ export default function NewsList({displayMode}) {
     const [selectedSources, setSelectedSources] = useState([]);
     const [selectedCountries, setSelectedCountries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [endDateOpen, setEndDateOpen] = useState(null);
     //endregion
 
     useEffect(() => {
@@ -40,10 +44,10 @@ export default function NewsList({displayMode}) {
                 let res;
                 if (displayMode === 'home' && (!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
                     dispatch(changeNavBar('home'));
-                    res = await getAllNews(page, pageSize, searchKey, selectedSources);
+                    res = await getAllNews(page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
                 } else {
                     dispatch(changeNavBar('headlines'));
-                    res = await getHeadlines(page, pageSize, searchKey, selectedSources, selectedCountries);
+                    res = await getHeadlines(page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
                 }
 
                 if (res && res.data && res.data.articles) {
@@ -58,13 +62,37 @@ export default function NewsList({displayMode}) {
         }
 
         fetchData();
-    }, [selectedTab, searchKey, selectedSources, selectedCountries, page]);
+    }, [selectedTab, searchKey, selectedSources, selectedCountries, page, startDate, endDate]);
 
     //region handlers
 
-    function sourceOnChange(value) {
-        setSelectedSources(value);
+    //region Date
+
+    function disabledStartDate(startValue) {
+        if (!startValue || !endDate) {
+            return false;
+        }
+        return startValue.valueOf() > endDate.valueOf();
     }
+
+    function disabledEndDate(endValue) {
+        if (!endValue || !startDate) {
+            return false;
+        }
+        return endValue.valueOf() <= startDate.valueOf() || endValue.valueOf() > moment().valueOf();
+    }
+
+    function handleStartOpenChange(open) {
+        if (!open) {
+            setEndDateOpen(true);
+        }
+    }
+
+    function handleEndOpenChange(open) {
+        setEndDateOpen(open);
+    }
+
+    //endregion
 
     //endregion
 
@@ -75,12 +103,12 @@ export default function NewsList({displayMode}) {
                     <Search onChange={e => setSearchKey(e.target.value)}/>
                 </Col>
             </Row>
-            <Row type="flex" justify="center" gutter={24}>
+            <Row type="flex" justify="center" gutter={8}>
                 <Col span={4}>
-                    <Select disabled={!!(selectedCountries && selectedCountries.length)} showArrow={true}
+                    <Select placeholder={'Select Source'} disabled={!!(selectedCountries && selectedCountries.length)}
+                            showArrow={true}
                             maxTagCount={1} className={'fluid'} mode='multiple'
-                            onChange={sourceOnChange}
-                            style={{width: 120}}>
+                            onChange={value => setSelectedSources(value)}>
                         {sources.map(source =>
                             <Select.Option key={source.id} value={source.id}>
                                 {source.name}
@@ -90,23 +118,42 @@ export default function NewsList({displayMode}) {
                 </Col>
 
                 <Col span={4}>
-                    <Select disabled={!!(selectedSources && selectedSources.length)} className={'fluid'}
-                            mode='multiple' onChange={sourceOnChange} style={{width: 120}}>
-                        {sources.map(source =>
-                            <Select.Option key={source.id} value={source.id}>
-                                {source.name}
+                    <Select placeholder={'Select Country'} disabled={!!(selectedSources && selectedSources.length)}
+                            className={'fluid'}
+                            mode='multiple' onChange={value => setSelectedCountries(value)}>
+                        {Object.entries(COUNTRIES).map(([key, value]) =>
+                            <Select.Option key={key} value={key}>
+                                {value}
                             </Select.Option>
                         )}
                     </Select>
                 </Col>
 
                 <Col span={4}>
-                    <DatePicker className={'fluid'}></DatePicker>
+                    <DatePicker
+                        className={'fluid'}
+                        disabledDate={disabledStartDate}
+                        format="YYYY-MM-DD"
+                        value={startDate}
+                        placeholder="From"
+                        onChange={(value) => setStartDate(value)}
+                        onOpenChange={handleStartOpenChange}
+                    />
                 </Col>
 
                 <Col span={4}>
-                    <DatePicker className={'fluid'}></DatePicker>
+                    <DatePicker
+                        className={'fluid'}
+                        disabledDate={disabledEndDate}
+                        format="YYYY-MM-DD"
+                        value={endDate}
+                        placeholder="To"
+                        onChange={(value) => setEndDate(value)}
+                        open={endDateOpen}
+                        onOpenChange={handleEndOpenChange}
+                    />
                 </Col>
+
             </Row>
             <Row type="flex" justify="center">
                 <Col span={12}>

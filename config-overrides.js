@@ -20,7 +20,6 @@ module.exports = override(
 	addLessLoader({
 		javascriptEnabled: true,
 		modifyVars: {
-			'@primary-color': '#0065A8',
 			'@font-family-no-number': 'Roboto, Helvetica, Arial, sans-serif',
 			'@font-family': 'Roboto, @font-family-no-number'
 		}

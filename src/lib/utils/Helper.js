@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const guid = () => {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -13,7 +15,7 @@ export const getApiKeyQuery = () => {
     return `apiKey=${token}`;
 };
 
-export const apiQueryBuilder = (page, pageSize, searchKey, sources, countries) => {
+export const apiQueryBuilder = (page, pageSize, searchKey, sources, countries, startDate, endDate) => {
     let query = getApiKeyQuery();
     if (searchKey) {
         query = query.concat(`&q=${searchKey}`)
@@ -33,6 +35,12 @@ export const apiQueryBuilder = (page, pageSize, searchKey, sources, countries) =
     }
     if (pageSize) {
         query = query.concat(`&pageSize=${pageSize}`)
+    }
+    if (startDate) {
+        query = query.concat(`&from=${startDate.format('YYYY-MM-DD')}`)
+    }
+    if (endDate) {
+        query = query.concat(`&to=${endDate.format('YYYY-MM-DD')}`)
     }
     return query;
 };

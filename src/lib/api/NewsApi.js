@@ -17,17 +17,17 @@ export const acquireCancelTokenSource = () => {
 
 export const getSource = () => axiosNews.get(`sources?${getApiKeyQuery()}`);
 
-export const getAllNews = (page, pageSize, searchKey, sources) => {
+export const getAllNews = (page, pageSize, searchKey, sources, startDate, endDate) => {
     cancelPendingRequest(token);
     token = acquireCancelTokenSource();
-    const query = apiQueryBuilder(page, pageSize, searchKey, sources);
+    const query = apiQueryBuilder(page, pageSize, searchKey, sources, startDate, endDate);
     return axiosNews.get(`everything?${query}`, {cancelToken: token.token})
 };
 
-export const getHeadlines = (page, pageSize, searchKey, sources, countries) => {
+export const getHeadlines = (page, pageSize, searchKey, sources, countries, startDate, endDate) => {
     cancelPendingRequest(token);
     token = acquireCancelTokenSource();
-    const query = apiQueryBuilder(page, pageSize, searchKey, sources, countries);
+    const query = apiQueryBuilder(page, pageSize, searchKey, sources, countries, startDate, endDate);
     return axiosNews.get(`top-headlines?${query}`, {cancelToken: token.token})
 };
 

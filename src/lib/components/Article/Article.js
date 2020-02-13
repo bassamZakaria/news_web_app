@@ -12,21 +12,7 @@ import {Description} from "../Description/Description";
 export default function Article({data, displayMode}) {
     const dispatch = useDispatch();
 
-    //const selectedArticle = data ? data : useSelector(state => _.get(state, 'newsReducer.selectedArticle', null));
-
-    const selectedArticle = {
-        source: {
-            id: 'wired',
-            name: 'Wired'
-        },
-        author: 'Andrew Leonard',
-        title: 'A Code-Obsessed Novelist Builds a Writing Bot. Plot Thickens',
-        description: 'Vikram Chandra, the author of Sacred Games, created Granthika to keep track of complex narratives. It could change the future of storytelling.',
-        url: 'https://www.wired.com/story/code-obsessed-novelist-builds-writing-bot-the-plot-thickens/',
-        urlToImage: 'https://media.wired.com/photos/5e3b2af6e601630009b7e7a9/191:100/w_1280,c_limit/Backchannel-Vikram-Chandra-2.jpg',
-        publishedAt: '2020-02-06T12:00:00Z',
-        content: 'A carven image of Ganesha, the elephant-headed Hindu god who is known as both the remover of obstacles and the patron of poetry, greets visitors from the front door of the Craftsman-style home in north Oakland, just a few houses south of the Berkeley border, … [+4929 chars]'
-    };
+    const selectedArticle = data ? data : useSelector(state => _.get(state, 'newsReducer.selectedArticle', null));
 
     function getArticleView() {
         return (
@@ -55,7 +41,9 @@ export default function Article({data, displayMode}) {
                     </Col>
                 </Row>
 
-                {selectedArticle.content && <Row>{selectedArticle.content}</Row>}
+                {selectedArticle.content &&
+                <Row> <Description description={selectedArticle.description} content={selectedArticle.content}/>
+                </Row>}
 
                 {displayMode && displayMode === ARTICLE_DISPLAY_MODE.QUICK_VIEW &&
                 <Link onClick={() => dispatch(setSelectedArticle(data))} to={'/details'}>View Details</Link>}

@@ -32,10 +32,10 @@ export default function Layout(props) {
                 extra={[
                     <Menu key={'mainMenu'} mode='horizontal' onClick={handleTabClick} selectedKeys={[selectedTab]}>
                         <Menu.Item key="home">
-                            <Link to={'/home'}>Home</Link>
+                            <Link style={{color : 'white'}} to={'/home'}>Home</Link>
                         </Menu.Item>
                         <Menu.Item key="headlines">
-                            <Link to={'/headlines'}>Headlines</Link>
+                            <Link style={{color : 'white'}} to={'/headlines'}>Headlines</Link>
                         </Menu.Item>
                     </Menu>
                 ]}
