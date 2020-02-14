@@ -28,21 +28,11 @@ export default function Layout() {
     const location = useLocation();
 
     //region to  always select the right tab when land
-    const getCurrentKey = () => {
-        const _pathname = location.pathname;
-        const pathArr = _pathname.split('/');
-        const path = pathArr[1];
-        let key = 'home';
-        if (path) {
-            key = ['home', 'headlines'].includes(path) ? path : key;
-        }
-        return key;
-    };
 
     useEffect(() => {
-        const currentSelectedTab = getCurrentKey();
-        if (currentSelectedTab !== selectedTab) {
-            dispatch(changeNavBar(currentSelectedTab));
+        debugger;
+        if (location.pathname !== `/${selectedTab}`) {
+            dispatch(changeNavBar(location.pathname === '/home' ? 'home' : 'headlines'));
         }
     }, [location.pathname]);
     //endregion
@@ -71,12 +61,12 @@ export default function Layout() {
                     <Route path={`${routers.everything}`}
                            exact={true}
                            render={(props) => {
-                               return <NewsList {...props} selectedTab={'home'}/>;
+                               return <NewsList selectedTab={selectedTab} {...props}/>;
                            }}/>
                     <Route path={`${routers.headlines}`}
                            exact={true}
                            render={(props) => {
-                               return <NewsList {...props} selectedTab={'headlines'}/>;
+                               return <NewsList selectedTab={selectedTab} {...props}/>;
                            }}/>
                     <Route path={`${routers.details}`}
                            exact={true}

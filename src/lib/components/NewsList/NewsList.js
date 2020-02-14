@@ -47,16 +47,24 @@ export default function NewsList({selectedTab, location, history}) {
         async function fetchData() {
             setLoading(true);
             try {
-                let res;
-                if ((selectedTab === 'home')) {
-                    res = await getAllNews(page, pageSize, searchKey, startDate, endDate);
-                } else {
-                    res = await getHeadlines(page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
-                }
+                if (selectedTab) {
+                    let res;
+                    if (selectedTab !== 'headlines' &&  (!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
+                        if (location.pathname !== '/home') {
+                            dispatch(changeNavBar('home'));
+                            history.push('/home');
+                        } else res = await getAllNews(page, pageSize, searchKey, startDate, endDate);
+                    } else {
+                        if (location.pathname !== '/headlines') {
+                            dispatch(changeNavBar('headlines'));
+                            history.push('/headlines');
+                        } else res = await getHeadlines(page, pageSize, searchKey, selectedSources, selectedCountries, startDate, endDate);
+                    }
 
-                if (res && res.data && res.data.articles) {
-                    setDataSource(res.data.articles);
-                    setTotalElements(res.data.totalResults > 100 ? 100 : res.data.totalResults);
+                    if (res && res.data && res.data.articles) {
+                        setDataSource(res.data.articles);
+                        setTotalElements(res.data.totalResults > 100 ? 100 : res.data.totalResults);
+                    }
                 }
             } catch (error) {
                 //TODO: need to add interceptors to handle errors and meaningful error messages
