@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {BrowserRouter, Link, Redirect, Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import {BrowserRouter, Link, Redirect, Route, Switch, useLocation} from 'react-router-dom';
 import Exception from 'ant-design-pro/lib/Exception';
 import {Menu, PageHeader} from "antd";
 import "antd/dist/antd.css";
@@ -24,7 +24,6 @@ export default function Layout() {
         dispatch(changeNavBar(key));
     }
 
-    const history = useHistory();
     const location = useLocation();
 
     //region to  always select the right tab when land
