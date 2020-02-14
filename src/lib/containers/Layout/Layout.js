@@ -30,7 +30,6 @@ export default function Layout() {
     //region to  always select the right tab when land
 
     useEffect(() => {
-        debugger;
         if (location.pathname !== `/${selectedTab}`) {
             dispatch(changeNavBar(location.pathname === '/home' ? 'home' : 'headlines'));
         }
