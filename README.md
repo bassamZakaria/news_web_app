@@ -8,7 +8,8 @@ Please add REACT_APP_API_KEY= to the env file with generated news API key
 
 - As a user, I want to be able to select either "Source" or "Country" (not at the same time) => done
  
-- As a user, I want to be directly switched to "Headlines" when I select "Source" or "Country" => done 
+- As a user, I want to be directly switched to "Headlines" when I select "Source" or "Country" => done
+ 
 - As a user, I want to be able to open a quick news view => done
  
 - As a user, I want to be able to open a detail page (The user will not be able to land on this page directly) => done
