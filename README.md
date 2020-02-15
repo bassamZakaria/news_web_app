@@ -1,5 +1,7 @@
 Please add REACT_APP_API_KEY= to the env file with generated news API key
 
+check develop branch for updates I did after the deadline
+
 - As a user, When I click on Headlines I want to see top-headlines => done
  
 - As a user, When I click on "Home" I want to see all the news without filters => done
