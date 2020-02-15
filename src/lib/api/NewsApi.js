@@ -1,6 +1,6 @@
 import {axiosNews} from '../axios/axiosInstances'
 import {apiQueryBuilder, getApiKeyQuery} from "../utils/Helper";
-import {cancel, generateCancelTokenSource} from "../axios/axiosOperations";
+import {cancel, generateCancelTokenSource} from "../axios/axiosHelper";
 
 let token = null;
 

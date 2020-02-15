@@ -71,8 +71,14 @@ export default function Layout() {
                            render={() => {
                                return <Article displayMode={ARTICLE_DISPLAY_MODE.DETAILS}/>;
                            }}/>
+                    <Route path='/unauthorized' render={() => (
+                        <Exception type="403" desc="Sorry, You are not authorized to view this content."
+                                   actions={<div/>}/>)}/>
+                    <Route exact={true} path='/maintenance' render={() => (
+                        <Exception type="500" desc="Sorry, Site is undergoing maintenance."
+                                   actions={<div/>}/>)}/>
                     <Route>
-                        <Exception type='404' desc='Sorry, the page you visited does not exist.'/>
+                        <Exception type="404" desc="Sorry, the page you visited does not exist."/>
                     </Route>
                 </Switch>
             </BrowserRouter>
