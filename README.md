@@ -18,9 +18,13 @@ Please add REACT_APP_API_KEY= to the env file with generated news API key
  
 - As a user, I want to be able to search by any value for title and body. => done
 
-- If There are no sources or countries will search with 'a' for everything and top-headlines as it's required to have at least (search keyword, source, domain, country or category)
+- If There are no sources or countries will search with 'a' for everything and top-headlines as it's required to have 
+  at least (search keyword, source, domain, country or category)
 
 - Add Interceptor for all axios request
+
+************************************************************************************************************************
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
