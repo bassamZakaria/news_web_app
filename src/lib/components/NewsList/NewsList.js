@@ -49,7 +49,7 @@ export default function NewsList({selectedTab, location, history}) {
             try {
                 if (selectedTab) {
                     let res;
-                    if (selectedTab !== 'headlines' &&  (!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
+                    if (selectedTab !== 'headlines' && (!selectedSources || !selectedSources.length) && (!selectedCountries || !selectedCountries.length)) {
                         if (location.pathname !== '/home') {
                             dispatch(changeNavBar('home'));
                             history.push('/home');
@@ -68,9 +68,7 @@ export default function NewsList({selectedTab, location, history}) {
                 }
             } catch (error) {
                 //TODO: need to add interceptors to handle errors and meaningful error messages
-                notification.error({
-                    message: error.message
-                });
+                console.log(error);
             } finally {
                 setLoading(false);
             }

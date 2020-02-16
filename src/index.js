@@ -6,8 +6,10 @@ import * as serviceWorker from './serviceWorker';
 import {store} from "./lib/store";
 import {Provider} from 'react-redux';
 import {BrowserRouter} from "react-router-dom";
+import configureAxiosInstance from './lib/axios/useInterceptorsAxios';
 
 
+configureAxiosInstance();
 ReactDOM.render(
     <BrowserRouter>
         <Provider
