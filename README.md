@@ -1,5 +1,6 @@
 Please add REACT_APP_API_KEY= to the env file with generated news API key
 
+and github
 
 - As a user, When I click on Headlines I want to see top-headlines => done
  
