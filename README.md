@@ -1,4 +1,4 @@
-Please add REACT_APP_API_KEY= to the env file with generated news API key
+Please add REACT_APP_API_KEY= to the env file with generated news API key from https://newsapi.org/v2/
 
 ************************************************************************************************************************
 
